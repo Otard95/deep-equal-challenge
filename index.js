@@ -1,3 +1,5 @@
+const assert = require('assert')
+
 const deepEquals = (a, b) => {
   if (typeof a !== typeof b)
     return false
@@ -13,10 +15,10 @@ const deepEquals = (a, b) => {
   }
 }
 
-console.log(deepEquals('a', 'a')) // true  => true
-console.log(deepEquals(1, 1))     // true  => true
-console.log(deepEquals('a', 1))   // false => false
-console.log(deepEquals({}, {}))   // true  => true
-console.log(deepEquals({}, []))   // true  => false
-console.log(deepEquals({}, null)) // true  => false
-console.log(deepEquals(/a/g, {})) // true  => false
+assert.equal(deepEquals( 'a', 'a' ), true, `deepEquals('a', 'a') failed assertion. Expected 'true' but got '${deepEquals('a', 'a')}'`)
+assert.equal(deepEquals(   1, 1   ), true, `deepEquals(1, 1) failed assertion. Expected 'true' but got '${deepEquals(1, 1)}'`)
+assert.equal(deepEquals( 'a', 1   ), false, `deepEquals('a', 1) failed assertion. Expected 'false' but got '${deepEquals('a', 1)}'`)
+assert.equal(deepEquals(  {}, {}  ), true, `deepEquals({}, {}) failed assertion. Expected 'true' but got '${deepEquals({}, {})}'`)
+assert.equal(deepEquals(  {}, []  ), false, `deepEquals({}, []) failed assertion. Expected 'false' but got '${deepEquals({}, [])}'`)
+assert.equal(deepEquals(  {}, null), false, `deepEquals({}, null) failed assertion. Expected 'false' but got '${deepEquals({}, null)}'`)
+assert.equal(deepEquals(/a/g, {}  ), false, `deepEquals(/a/g, {}) failed assertion. Expected 'false' but got '${deepEquals(/a/g, {})}'`)
