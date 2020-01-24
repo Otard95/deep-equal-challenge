@@ -1,18 +1,41 @@
 const assert = require('assert')
 
 const deepEquals = (a, b) => {
-  if (typeof a !== typeof b)
-    return false
 
-  if (typeof a === 'object') {
-    for (const key in a) {
-      const val = a[key]
-      if (!b[key] || b[key] !== val) return false
-    }
-    return true
-  } else {
-    return a === b
-  }
+	if(a === undefined || b === undefined || a === null || b === null) return a === b;
+
+	if(String(a) !== String(b)) return false;
+
+	const compareProperties = (a, b) => {
+
+		const
+			aProperties = Object.getOwnPropertyNames(a),
+			bProperties = Object.getOwnPropertyNames(b);
+
+		for (let property in aProperties) {
+
+			if (!bProperties.hasOwnProperty(property) || a[property] !== b[property]) return false;
+
+		}
+
+		return true;
+
+	};
+
+	if (!compareProperties(a, b) || !compareProperties(Object.getPrototypeOf(a), Object.getPrototypeOf(b))) return false;
+
+	if(a instanceof Object && Symbol.iterator in a){
+
+		for (let property in a) {
+
+			if (!b.hasOwnProperty(property) || !equals(a[property], b[property])) return false;
+
+		}
+
+	}
+
+	return true;
+
 }
 
 // Not tricked by types
