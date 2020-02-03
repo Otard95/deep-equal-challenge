@@ -2,39 +2,31 @@ const assert = require('assert')
 
 const deepEquals = (a, b) => {
 
-	if(a === undefined || b === undefined || a === null || b === null) return a === b;
-
-	if(String(a) !== String(b)) return false;
+	if (Object.is(a,b)) return true
+	if (a === undefined || b === undefined || a === null || b === null) return a === b
 
 	const compareProperties = (a, b) => {
 
 		const
 			aProperties = Object.getOwnPropertyNames(a),
-			bProperties = Object.getOwnPropertyNames(b);
+			bProperties = Object.getOwnPropertyNames(b)
 
-		for (let property in aProperties) {
+		if (aProperties.length !== bProperties.length) return false
 
-			if (!bProperties.hasOwnProperty(property) || a[property] !== b[property]) return false;
+		for (let property of aProperties) {
 
-		}
-
-		return true;
-
-	};
-
-	if (!compareProperties(a, b) || !compareProperties(Object.getPrototypeOf(a), Object.getPrototypeOf(b))) return false;
-
-	if(a instanceof Object && Symbol.iterator in a){
-
-		for (let property in a) {
-
-			if (!b.hasOwnProperty(property) || !equals(a[property], b[property])) return false;
+			if (!b.hasOwnProperty(property)) return false
+			if (!deepEquals(a[property], b[property])) return false
 
 		}
+
+		return true
 
 	}
 
-	return true;
+	if (typeof a === 'object') return compareProperties(a, b)
+
+	return false
 
 }
 
